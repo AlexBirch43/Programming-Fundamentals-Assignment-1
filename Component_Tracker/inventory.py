@@ -34,6 +34,7 @@ def use_item(name):
             if current_qty <= 0:
                 print("Item out of stock!")
                 return
+            print(f"Current stock of {item['name']}: {current_qty}")                      #helpful prompt to show stock before use and reduces invalid inputs
             try:
                 amount = int(input(f"How many '{item['name']}' would you like to use? ")) #ask how many to use
             except ValueError:                                                            #handle input error
