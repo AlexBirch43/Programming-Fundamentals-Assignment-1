@@ -1,3 +1,6 @@
+import csv
+from file_setup import CSV_FILE
+
 #  Load CSV Inventory
 def load_inventory():
     with open(CSV_FILE, mode='r', newline='') as file:
@@ -22,20 +25,32 @@ def search_item(name):
     print("Item not found.")
 
 #  Use Item (Engineer Only)
-# ******************COULD USE SOME CODE TO CHOOSE HOW MANY OF THE ITEMS TO USE**************
 def use_item(name):
     name = name.strip()
     inventory = load_inventory()
     for item in inventory:
         if item['name'].strip().lower() == name.lower():
-            if int(item['quantity']) > 0:
-                item['quantity'] = str(int(item['quantity']) - 1)
-                save_inventory(inventory)
-                print(f"Used one {item['name']}. Remaining: {item['quantity']}")
-            else:
+            current_qty = int(item['quantity'])
+            if current_qty <= 0:
                 print("Item out of stock!")
+                return
+            try:
+                amount = int(input(f"How many '{item['name']}' would you like to use? ")) #ask how many to use
+            except ValueError:                                                            #handle input error
+                print("Please enter a valid number.")
+                return
+            if amount <= 0:                                                               #input validation
+                print("You must use at least one.")
+                return
+            if amount > current_qty:                                                      #only allow use of items in stock
+                print(f"Not enough in stock. You only have {current_qty}.")
+                return
+            item['quantity'] = str(current_qty - amount)                                  #update quantity
+            save_inventory(inventory)
+            print(f"Used {amount} of {item['name']}. Remaining: {item['quantity']}")
             return
     print("Item not found.")
+
 
 #  Edit Item (Available to both users)
 def edit_item(name):
