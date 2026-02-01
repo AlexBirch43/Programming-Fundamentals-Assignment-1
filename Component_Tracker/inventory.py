@@ -1,5 +1,7 @@
 import csv
 from file_setup import CSV_FILE
+from history_log import log_action            #gives inventory functions access to the logging tool
+
 
 #  Load CSV Inventory
 def load_inventory():
@@ -25,7 +27,7 @@ def search_item(name):
     print("Item not found.")
 
 #  Use Item (Engineer Only)
-def use_item(name):
+def use_item(name, user):      #passing user as a parameter into the functions that modify data, to allow logging
     name = name.strip()
     inventory = load_inventory()
     for item in inventory:
@@ -48,13 +50,14 @@ def use_item(name):
                 return
             item['quantity'] = str(current_qty - amount)                                  #update quantity
             save_inventory(inventory)
+            log_action(user, f"Used {amount} of {item['name']}. New quantity: {item['quantity']}")     #logs user and action performed into the history log
             print(f"Used {amount} of {item['name']}. Remaining: {item['quantity']}")
             return
     print("Item not found.")
 
 
 #  Edit Item (Available to both users)
-def edit_item(name):
+def edit_item(name, user):       #passing user as a parameter into the functions that modify data, to allow logging
     name = name.strip()
     inventory = load_inventory()
     for item in inventory:
@@ -76,12 +79,13 @@ def edit_item(name):
                 return
             item['quantity'] = str(max(0, int(item['quantity']) + change))
             save_inventory(inventory)
+            log_action(user, f"Edited {item['name']}: change {change}, new quantity {item['quantity']}")      #logs user and action performed into the history log
             print(f"{item['name']} updated to {item['quantity']} units.")
             return
     print("Item not found.")
 
 #  Add New Item (Manager Only)
-def add_new_item():
+def add_new_item(user):       #passing user as a parameter into the functions that modify data, to allow logging
     name = input("Enter item name: ").strip()
     type_ = input("Enter item type: ").strip()
     while True:
@@ -97,10 +101,11 @@ def add_new_item():
     inventory = load_inventory()
     inventory.append({'name': name, 'type': type_, 'quantity': quantity})
     save_inventory(inventory)
+    log_action(user, f"Added item: {name}, type: {type_}, quantity: {quantity}")   # logs user and action performed into the history log
     print(f"{name} added to inventory.")
 
 #  Remove Item (Manager Only)
-def remove_item(name):
+def remove_item(name, user):       #passing user as a parameter into the functions that modify data, to allow logging
     name = name.strip()
     inventory = load_inventory()
     new_inventory = [item for item in inventory if item['name'].strip().lower() != name.lower()]
@@ -108,6 +113,7 @@ def remove_item(name):
         print("Item not found.")
     else:
         save_inventory(new_inventory)
+        log_action(user, f"Removed item: {name}")    # logs user and action performed into the history log
         print(f"{name} removed from inventory.")
 
 #  Overall Report (Manager Only)
