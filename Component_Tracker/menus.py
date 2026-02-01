@@ -38,7 +38,7 @@ def manager_menu(user):             #passing user into the functions that modify
         elif choice == '2':
             edit_item(input("Enter item name: ").strip(), user)     #passing user into the functions that modify data, to allow logging
         elif choice == '3':
-            add_new_item()
+            add_new_item(user)                                      # Line changed to add (user) to fix bug B1
         elif choice == '4':
             remove_item(input("Enter item name: ").strip(), user)    #passing user into the functions that modify data, to allow logging
         elif choice == '5':
