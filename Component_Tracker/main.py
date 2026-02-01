@@ -13,9 +13,9 @@ def login_menu():
             role = get_role(username)
 
             if role == "ENGINEER":
-                engineer_menu()
-            else:
-                manager_menu()
+                engineer_menu(role)             #(role) passes the username into the menus for logging
+            else:                               #get_role(username) has already normalised to username to uppercase for consistency
+                manager_menu(role)
             break
         else:
             print("Invalid details. Please try again.\n")
