@@ -3,7 +3,7 @@ from inventory import (search_item, use_item, edit_item,
 
 
 #  Engineer Menu
-def engineer_menu():
+def engineer_menu(user):    #passing user into the functions that modify data, to allow logging
     while True:
         print("\nENGINEER MENU:")
         print("1. Search Item")
@@ -14,16 +14,16 @@ def engineer_menu():
         if choice == '1':
             search_item(input("Enter item name: ").strip())
         elif choice == '2':
-            use_item(input("Enter item name: ").strip())
+            use_item(input("Enter item name: ").strip(), user)     #passing user into the functions that modify data, to allow logging
         elif choice == '3':
-            edit_item(input("Enter item name: ").strip())
+            edit_item(input("Enter item name: ").strip(), user)    #passing user into the functions that modify data, to allow logging
         elif choice == '4':
             break
         else:
             print("Invalid choice.")
 
 #  Manager Menu
-def manager_menu():
+def manager_menu(user):             #passing user into the functions that modify data, to allow logging
     while True:
         print("\nMANAGER MENU:")
         print("1. Search Item")
@@ -36,11 +36,11 @@ def manager_menu():
         if choice == '1':
             search_item(input("Enter item name: ").strip())
         elif choice == '2':
-            edit_item(input("Enter item name: ").strip())
+            edit_item(input("Enter item name: ").strip(), user)     #passing user into the functions that modify data, to allow logging
         elif choice == '3':
             add_new_item()
         elif choice == '4':
-            remove_item(input("Enter item name: ").strip())
+            remove_item(input("Enter item name: ").strip(), user)    #passing user into the functions that modify data, to allow logging
         elif choice == '5':
             overall_report()
         elif choice == '6':
