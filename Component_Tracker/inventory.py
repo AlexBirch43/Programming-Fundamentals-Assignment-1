@@ -18,10 +18,10 @@ def save_inventory(inventory):
 
 #  Search Item (Available to both users)
 def search_item(name):
-    name = name.strip()
+    name = name.strip()                                     #removes trailing and leading blank spaces from the search
     inventory = load_inventory()
-    for item in inventory:
-        if item['name'].strip().lower() == name.lower():
+    for item in inventory:                                  #loops through every item stored in inventory
+        if item['name'].strip().lower() == name.lower():    #strip() removes extra spaces, lower() makes the comparison case-insensitive
             print(f"{item['name']} has {item['quantity']} units.")
             return
     print("Item not found.")
